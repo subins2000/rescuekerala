@@ -72,7 +72,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'ddtrace.contrib.django',
 ]
 
 if DEBUG:
@@ -94,7 +93,7 @@ if DEBUG:
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
 DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
     'pympler.panels.MemoryPanel',
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.settings.SettingsPanel',
