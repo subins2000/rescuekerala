@@ -15,7 +15,7 @@
         {% for req in pinned_data %}
             <div class="card priority-very-important">
                 <span class="card-text">
-                    {{ req.description | safe | linebreaks }}<br/>
+                    {{ req.description | safe | urlize | linebreaks }}<br/>
                 </span>
                 <span class="card-priority">Very Important</span><br/>
                 <span class="card-time">{% bootstrap_icon "time" %} {{ req.dateadded }}</span>
@@ -29,7 +29,7 @@
         {% for req in data %}
             <div class="card priority-{{ req.get_priority_display.lower }}">
                 <span class="card-text">
-                    {{ req.description | safe }}<br/>
+                    {{ req.description | safe | urlize }}<br/>
                     {% if req.image %}
                         <a href="{{req.image.url}}"
                             class="btn btn-default card-link">{% bootstrap_icon "eye-open" %} View Image</a>
