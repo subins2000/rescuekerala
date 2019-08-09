@@ -550,6 +550,7 @@ class Announcements(models.Model):
         default='L')
 
     description = models.TextField(blank=True)
+    hashtags = models.TextField(blank=True,default="")
     image = models.ImageField(blank=True, upload_to=upload_to)
     upload = models.FileField(blank=True, upload_to=upload_to)
     is_pinned = models.BooleanField(default=False)
@@ -686,4 +687,3 @@ class Hospital(models.Model):
 
     def __str__(self):
         return self.name + ' - ' + self.designation
-    

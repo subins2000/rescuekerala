@@ -744,16 +744,39 @@ def find_people(request):
 
     return render(request, 'mainapp/people.html', {'filter': filter , "data" : people })
 
+#Get unique hashtags from items in DB
+def get_hashtags(announcement_obj):
+    hashtags_str = ""
+    for i in (announcement_obj.objects.all().values_list('hashtags', flat=True)):
+        if i !='':
+            hashtags_str = hashtags_str +","+i
+    hashtags = list(set([j.strip() for j in hashtags_str.strip(',').split(',')]))
+    return hashtags
+
 def announcements(request):
     link_data = Announcements.objects.filter(is_pinned=False).order_by('-id').all()
     pinned_data = Announcements.objects.filter(is_pinned=True).order_by('-id').all()[:5]
     # As per the discussions orddering by id hoping they would be addded in order
+
+    hashtags = get_hashtags(Announcements)
     paginator = Paginator(link_data, 10)
     page = request.GET.get('page')
     link_data = paginator.get_page(page)
     return render(request, 'announcements.html', {'filter': filter, "data" : link_data,
-                                                  'pinned_data': pinned_data})
+                                                  'pinned_data': pinned_data, 'hashtags':hashtags})
 
+# Function to filter announcements based on hashtag
+def announcements_filter(request,filter_):
+    link_data = Announcements.objects.filter(is_pinned=False,hashtags__icontains=filter_).order_by('-id').all()
+    # Uncomment next line if you want to show pinned data in filtered view and add pinned data in render JSON
+    # pinned_data = Announcements.objects.filter(is_pinned=True).order_by('-id').all()[:5]
+
+    hashtags = get_hashtags(Announcements)
+    paginator = Paginator(link_data, 10)
+    page = request.GET.get('page')
+    link_data = paginator.get_page(page)
+    return render(request, 'announcements.html', {'filter': filter, "data" : link_data,
+                                                  'hashtags':hashtags,'selected_hashtag':filter_.strip()})
 
 class CoordinatorCampFilter(django_filters.FilterSet):
     class Meta:
