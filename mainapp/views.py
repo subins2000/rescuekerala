@@ -905,9 +905,37 @@ class CollectionCenterFilter(django_filters.FilterSet):
         if self.data == {}:
             self.queryset = self.queryset.none()
 
+class HospitalViewFitler(django_filters.FilterSet):
+    class Meta:
+        model = Hospital
+        fields = OrderedDict()
+        fields['name'] = ['icontains']
+        fields['designation'] = ['icontains']
+
+    
+    # def __init__(self, *args, **kwargs):
+    #     super(HospitalViewFitler, self).__init__(*args, **kwargs)
+    #     if self.data == {}:
+    #         self.queryset = self.queryset.none()
+
+
+class HospitalForm(forms.ModelForm):
+    class Meta:
+        model = Hospital
+        fields = ['name', 'designation']            
+
 class HospitalView(ListView):
     model = Hospital
+    success_url = '/hospitals/'
+    paginate_by = 50
     template_name = 'mainapp/hospitals.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = HospitalViewFitler(
+                self.request.GET, queryset=Hospital.objects.all()
+            )
+        return context
 
 class CollectionCenterListView(ListView):
     model = CollectionCenter
