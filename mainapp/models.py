@@ -685,5 +685,5 @@ class Hospital(models.Model):
     email = models.EmailField()
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.designation
     

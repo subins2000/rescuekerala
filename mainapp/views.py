@@ -31,7 +31,7 @@ from mainapp.admin import create_csv_response
 import csv
 from dateutil import parser
 import calendar
-from mainapp.models import CollectionCenter
+from mainapp.models import CollectionCenter, Hospital
 from collections import OrderedDict
 
 
@@ -905,6 +905,9 @@ class CollectionCenterFilter(django_filters.FilterSet):
         if self.data == {}:
             self.queryset = self.queryset.none()
 
+class HospitalView(ListView):
+    model = Hospital
+    template_name = 'mainapp/hospitals.html'
 
 class CollectionCenterListView(ListView):
     model = CollectionCenter
