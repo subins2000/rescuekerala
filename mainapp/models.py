@@ -674,3 +674,16 @@ class CsvBulkUpload(models.Model):
 
     def __str__(self):
         return self.name
+
+class Hospital(models.Model):
+    name = models.CharField(max_length=200)
+    officer = models.CharField(max_length=100)
+    designation = models.CharField(max_length=250)
+    phone_number_regex = RegexValidator(regex='^((\+91|91|0)[\- ]{0,1})?[456789]\d{9}$', message='Please Enter 10/11 digit mobile number or landline as 0<std code><phone number>', code='invalid_mobile')
+    landline = models.CharField(max_length=14, validators=[phone_number_regex])
+    mobile = models.CharField(max_length=14, validators=[phone_number_regex])
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.name
+    

@@ -9,7 +9,8 @@ from django.http import StreamingHttpResponse
 from mainapp.redis_queue import bulk_csv_upload_queue
 from mainapp.csvimporter import import_inmate_file
 from .models import Request, Volunteer, Contributor, DistrictNeed, DistrictCollection, DistrictManager, vol_categories, \
-    RescueCamp, Person, NGO, Announcements, DataCollection , PrivateRescueCamp , CollectionCenter, CsvBulkUpload, RequestUpdate
+    RescueCamp, Person, NGO, Announcements, DataCollection , PrivateRescueCamp , CollectionCenter, CsvBulkUpload, RequestUpdate, \
+    Hospital
 
 """
 Helper function for streaming csv downloads
@@ -272,5 +273,4 @@ admin.site.register(NGO, NGOAdmin)
 admin.site.register(Announcements, AnnouncementAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(DataCollection, DataCollectionAdmin)
-admin.site.register(CsvBulkUpload, CsvBulkUploadAdmin)
-admin.site.register(RequestUpdate, RequestUpdateAdmin)
+admin.site.register(Hospital)
