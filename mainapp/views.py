@@ -35,6 +35,7 @@ from mainapp.models import CollectionCenter, Hospital
 from collections import OrderedDict
 
 
+
 class CustomForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomForm, self).__init__(*args, **kwargs)
@@ -978,3 +979,10 @@ class CollectionCenterView(CreateView):
     model = CollectionCenter
     form_class = CollectionCenterForm
     success_url = '/collection_centers/'
+
+
+def announcement_api(request):
+    objects = Announcements.objects
+    data = list(objects.values())
+    return JsonResponse({"announcements" : data})
+    
