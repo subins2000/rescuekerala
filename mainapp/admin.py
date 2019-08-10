@@ -248,6 +248,13 @@ class DataCollectionAdmin(admin.ModelAdmin):
 class RequestUpdateAdmin(admin.ModelAdmin):
     readonly_fields = ['request']
 
+class HospitalAdmin(admin.ModelAdmin):
+    list_filter = ('district',)
+    list_display = ('district', 'name', 'officer', 'designation','landline','mobile','email')
+
+
+
+
 
 class CsvBulkUploadAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
@@ -273,4 +280,4 @@ admin.site.register(NGO, NGOAdmin)
 admin.site.register(Announcements, AnnouncementAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(DataCollection, DataCollectionAdmin)
-admin.site.register(Hospital)
+admin.site.register(Hospital,HospitalAdmin)
