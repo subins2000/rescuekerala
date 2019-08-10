@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import Count, QuerySet
 from django.db.models import Case, When, Sum, F
+from django.db.models.expressions import Value
+from django.db.models import CharField
 from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
