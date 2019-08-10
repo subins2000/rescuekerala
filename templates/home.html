@@ -17,7 +17,11 @@
         <strong><span class="notranslate">ദുരിതാശ്വാസ പ്രവർത്തനങ്ങളും രക്ഷാ ദൗത്യങ്ങളും ഏകോപിപ്പിക്കാൻ</span></strong><br/>
           <!-- <a class="btn btn-info btn-msg" href="{% static 'images/msg_cm.jpg' %}">Message from Hon. Chief Minister of Kerala</a> -->
           <a class="btn btn-info btn-msg" href="https://donation.cmdrf.kerala.gov.in/">Donate to Chief Minister's Fund Online</a>
-  </p>
+
+        </p>
+    <p>
+        <a class="btn btn-danger btn-msg" href="{%url 'Announcements' %}">{% bootstrap_icon "bullhorn" %} Announcements (<span class="ml notranslate">അറിയിപ്പുകൾ</span>)</a>
+    </p>
   <a href="https://keralarescuemap.ushahidi.io/posts/create/17" class="home-button card" role="button">
     {% bootstrap_icon "bell" %}
     <span class="text">
@@ -29,6 +33,13 @@
     <span class="text">
         Request<br/>for resources<br/>
         <span class="ml small notranslate">സഹായം അഭ്യർത്ഥിക്കാൻ</span>
+    </span>
+</a>
+<a href="{%url 'contribute' %}" class="home-button card" role="button">
+    {% bootstrap_icon "apple" %}
+    <span class="text">
+        Contribute<br/>
+        <span class="ml small notranslate">സഹായങ്ങൾ</span>
     </span>
 </a>
     <!-- <a href="{%url 'report_find_person' %}" class="home-button card" role="button">
@@ -52,13 +63,6 @@
                 <span class="ml small notranslate">അറിയിപ്പുകൾ</span>
             </span>
         </a>
-    <a href="{%url 'reg_contribview' %}" class="home-button card" role="button">
-        {% bootstrap_icon "apple" %}
-        <span class="text">
-            To Contribute<br/>
-            <span class="ml small notranslate">സംഭാവന നൽകാൻ</span>
-        </span>
-    </a>
     <a href="{%url 'distneedsview' %}" class="home-button card" role="button">
         {% bootstrap_icon "map-marker" %}
         <span class="text">
@@ -116,7 +120,7 @@
     </p>
      <br>
   <p class="slack">
-       Our Collaboration Platform (Slack) <a href="https://bit.ly/Keralarescuechat">Join</a>
+       Our Collaboration Platform (Slack) <a href="http://bit.ly/rescuechat">Join</a>
   </p>
 </div>
 {% endblock %}
