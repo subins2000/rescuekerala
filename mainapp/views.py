@@ -795,7 +795,17 @@ def announcements(request):
     return render(request, 'announcements.html', {'filter': filter, "data" : link_data,
                                                   'pinned_data': pinned_data, 'hashtags':hashtags})
 
-                                                  
+
+def announcements_id(request,id):
+    link_data = Announcements.objects.filter(id=id).all()
+
+    hashtags = get_hashtags(Announcements)
+    paginator = Paginator(link_data, 10)
+    page = request.GET.get('page')
+    link_data = paginator.get_page(page)
+    return render(request, 'announcements.html', {"data" : link_data, 'hashtags':hashtags, 'id': id})
+
+
 # Function to filter announcements based on hashtag
 def announcements_filter(request,filter_):
     link_data = Announcements.objects.filter(is_pinned=False,hashtags__icontains=filter_).order_by('-id').all()
