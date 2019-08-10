@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% load static %} {% block content %} {% load bootstrap3 %}
+{% extends 'base.html' %} {% load tag_lib %}
+{% load static %} {% block content %} {% load bootstrap3 %}
 
 <!--Navigation Breadcrumbs-->
 <nav aria-label="breadcrumb">
@@ -11,7 +12,22 @@
 <div class="container text-center">
   <h2 class="main-logo">Important Announcements</h2>
     <div class="announcement-cards">
+        <div class="card">
+                <span class="card-text">Tags<a href="{% url 'Announcements' %}" class="btn btn-info btn-xs pull-right" role="button">Clear Filters</a></span>
 
+                {% for i in hashtags %}
+                    <span class="card-time">
+                        {% if i == selected_hashtag %}
+                        {% bootstrap_icon "link" %}<a href="{% url 'announcements_filter' i %}" style="color:red; font-weight: 
+                        bold"> {{ i }}</a>
+                         {% else %}
+                        {% bootstrap_icon "link" %}<a href="{% url 'announcements_filter' i %}"> {{ i }}</a>
+                        {% endif %}
+                    </span>
+
+                {% endfor %}
+
+        </div>
         {% for req in pinned_data %}
             <div class="card priority-very-important">
                 <span class="card-text">
@@ -40,6 +56,18 @@
                             class="btn btn-default card-link">{% bootstrap_icon "download" %} Download</a>
                     {% endif %}
                 </span>
+                <span class="card-time">{% bootstrap_icon "time" %} {{ req.dateadded }}</span>
+
+
+                {% with req.hashtags|get_list as hashtags_ %}
+                {% if hashtags_|length != 0 %}
+                {% for i in hashtags_ %}
+                <span class="card-time">{% bootstrap_icon "link" %} <a href="{% url 'announcements_filter' i %}"> {{ i }}</a></span>
+                {% endfor %}
+                {% endif %}
+
+{% endwith %}
+
             </div>
         {% endfor %}
     </div>
