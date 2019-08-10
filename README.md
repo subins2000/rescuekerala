@@ -4,7 +4,7 @@
 
 <p align="center">The Website for co-ordinating the rehabilitation of the people affected in the Kerala Floods.</p>
 
-[![Join Kerala Rescue Slack channel](https://i.imgur.com/V7jxjak.png)](http://bit.ly/Keralarescuechat)
+[![Join Kerala Rescue Slack channel](https://i.imgur.com/V7jxjak.png)](http://bit.ly/rescuechat)
 
 ## Table of Contents
 - [Requirements](#requirements)
