@@ -992,4 +992,7 @@ def announcement_api(request):
     objects = Announcements.objects
     data = list(objects.values())
     return JsonResponse({"announcements" : data})
-    
+
+
+def contribute(request):
+    return render(request, 'mainapp/contribute.html')
