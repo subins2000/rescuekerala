@@ -808,7 +808,7 @@ def announcements_id(request,id):
 
 # Function to filter announcements based on hashtag
 def announcements_filter(request,filter_):
-    link_data = Announcements.objects.filter(is_pinned=False,hashtags__icontains=filter_).order_by('-id').all()
+    link_data = Announcements.objects.filter(hashtags__icontains=filter_).order_by('-id').all()
     # Uncomment next line if you want to show pinned data in filtered view and add pinned data in render JSON
     # pinned_data = Announcements.objects.filter(is_pinned=True).order_by('-id').all()[:5]
 
