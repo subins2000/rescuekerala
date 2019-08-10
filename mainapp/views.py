@@ -912,8 +912,9 @@ class HospitalViewFitler(django_filters.FilterSet):
         fields = OrderedDict()
         fields['name'] = ['icontains']
         fields['designation'] = ['icontains']
+        fields['district'] = ['exact']
 
-    
+
     # def __init__(self, *args, **kwargs):
     #     super(HospitalViewFitler, self).__init__(*args, **kwargs)
     #     if self.data == {}:
@@ -923,19 +924,23 @@ class HospitalViewFitler(django_filters.FilterSet):
 class HospitalForm(forms.ModelForm):
     class Meta:
         model = Hospital
-        fields = ['name', 'designation']            
+        fields = ['name', 'designation', 'district']
 
 class HospitalView(ListView):
     model = Hospital
     success_url = '/hospitals/'
     paginate_by = 50
     template_name = 'mainapp/hospitals.html'
+    queryset = Hospital.objects.order_by('-id')
 
     def get_context_data(self, **kwargs):
+        filtered_list = HospitalViewFitler(
+                self.request.GET, queryset=self.get_queryset())
+        kwargs['object_list'] = filtered_list.qs
         context = super().get_context_data(**kwargs)
-        context['filter'] = HospitalViewFitler(
-                self.request.GET, queryset=Hospital.objects.all()
-            )
+        filtered_list._qs = context['object_list']
+
+        context['filter'] = filtered_list
         return context
 
 class CollectionCenterListView(ListView):
