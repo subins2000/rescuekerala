@@ -26,6 +26,7 @@ urlpatterns = [
     path('collection_center/', views.CollectionCenterView.as_view(), name='collection_centers_view'),
     url(r'collection_centers/(?P<location>\w+)/$', views.CollectionCenterListView.as_view(), name='collection_centers_list'),
     path('collection_centers/', TemplateView.as_view(template_name='mainapp/collectioncenter_state_select.html'), name='collection_centers_district_select'),
+    path('contribute/', views.contribute, name='contribute'),
     path('reg_contrib/', views.RegisterContributor.as_view(), name='reg_contribview'),
     path('contribview/', views.contributors, name='contribview'),
     path('contrib_success/', views.ContribSuccess.as_view(), name='contribsucessview'),
@@ -64,5 +65,7 @@ urlpatterns = [
     path('consent_success/', views.ConsentSuccess.as_view(), name='consent_success'),
     url(r'c/(?P<pk>\d+)/(?P<ts>\d+)/$', views.VolunteerConsent.as_view(), name='volunteer_consent'),
     url('missing_and_finding_persons/', views.ReportFindPerson.as_view(), name='report_find_person'),
-    url('hospitals/', views.HospitalView.as_view(), name='hospitals')
+    url('hospitals/', views.HospitalView.as_view(), name='hospitals'),
+    url('announcements/api', views.announcement_api, name='announcements_api'),
+
 ]

@@ -174,7 +174,7 @@ class Request(models.Model):
         if(self.needkit_util):
             out += "\nKit Requirements :\n {}".format(self.detailkit_util)
         if(self.needrescue):
-            out += "\nRescue Action :\n {}".format(self.detailrescue)    
+            out += "\nRescue Action :\n {}".format(self.detailrescue)
         if(len(self.needothers.strip()) != 0):
             out += "\nOther Needs :\n {}".format(self.needothers)
         return out
@@ -677,6 +677,13 @@ class CsvBulkUpload(models.Model):
         return self.name
 
 class Hospital(models.Model):
+    district = models.CharField(
+        max_length = 15,
+        choices = districts,
+        verbose_name="District - ജില്ല",
+        null=True,
+        blank=True
+    )
     name = models.CharField(max_length=200)
     officer = models.CharField(max_length=100)
     designation = models.CharField(max_length=250, verbose_name="Officer name")
@@ -686,4 +693,4 @@ class Hospital(models.Model):
     email = models.EmailField()
 
     def __str__(self):
-        return self.name + ' - ' + self.designation
+        return self.name + ' - ' + self.designation      

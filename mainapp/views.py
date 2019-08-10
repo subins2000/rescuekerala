@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import Count, QuerySet
 from django.db.models import Case, When, Sum, F
+from django.db.models.expressions import Value
+from django.db.models import CharField
 from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -33,6 +35,7 @@ from dateutil import parser
 import calendar
 from mainapp.models import CollectionCenter, Hospital
 from collections import OrderedDict
+
 
 
 class CustomForm(forms.ModelForm):
@@ -934,8 +937,9 @@ class HospitalViewFitler(django_filters.FilterSet):
         fields = OrderedDict()
         fields['name'] = ['icontains']
         fields['designation'] = ['icontains']
+        fields['district'] = ['exact']
 
-    
+
     # def __init__(self, *args, **kwargs):
     #     super(HospitalViewFitler, self).__init__(*args, **kwargs)
     #     if self.data == {}:
@@ -945,19 +949,23 @@ class HospitalViewFitler(django_filters.FilterSet):
 class HospitalForm(forms.ModelForm):
     class Meta:
         model = Hospital
-        fields = ['name', 'designation']            
+        fields = ['name', 'designation', 'district']
 
 class HospitalView(ListView):
     model = Hospital
     success_url = '/hospitals/'
     paginate_by = 50
     template_name = 'mainapp/hospitals.html'
+    queryset = Hospital.objects.order_by('-id')
 
     def get_context_data(self, **kwargs):
+        filtered_list = HospitalViewFitler(
+                self.request.GET, queryset=self.get_queryset())
+        kwargs['object_list'] = filtered_list.qs
         context = super().get_context_data(**kwargs)
-        context['filter'] = HospitalViewFitler(
-                self.request.GET, queryset=Hospital.objects.all()
-            )
+        filtered_list._qs = context['object_list']
+
+        context['filter'] = filtered_list
         return context
 
 class CollectionCenterListView(ListView):
@@ -1001,3 +1009,13 @@ class CollectionCenterView(CreateView):
     model = CollectionCenter
     form_class = CollectionCenterForm
     success_url = '/collection_centers/'
+
+
+def announcement_api(request):
+    objects = Announcements.objects
+    data = list(objects.values())
+    return JsonResponse({"announcements" : data})
+
+
+def contribute(request):
+    return render(request, 'mainapp/contribute.html')
