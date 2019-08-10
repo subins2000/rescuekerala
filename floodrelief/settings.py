@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'ddtrace.contrib.django',	
 ]
 
 if DEBUG:
