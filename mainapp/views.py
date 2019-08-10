@@ -252,7 +252,7 @@ class DistNeeds(TemplateView):
 class RescueCampFilter(django_filters.FilterSet):
     class Meta:
         model = RescueCamp
-        fields = ['district']
+        fields = ['district', 'taluk']
 
     def __init__(self, *args, **kwargs):
         super(RescueCampFilter, self).__init__(*args, **kwargs)
@@ -270,12 +270,12 @@ def missing_persons(request):
 
 
 def relief_camps_list(request):
-    filter = RescueCampFilter(request.GET, queryset=RescueCamp.objects.filter(status='active'))
-    relief_camps = filter.qs.annotate(count=Count('person')).order_by('district','name').all()
+    _filter = RescueCampFilter(request.GET, queryset=RescueCamp.objects.filter(status='active'))
+    relief_camps = _filter.qs.annotate(count=Count('person')).order_by('district','name').all()
     paginator = Paginator(relief_camps,50)
     page = request.GET.get('page')
     data = paginator.get_page(page)
-    return render(request, 'mainapp/relief_camps_list.html', {'filter': filter, 'data': data})
+    return render(request, 'mainapp/relief_camps_list.html', {'filter': _filter, 'data': data})
 
 class RequestFilter(django_filters.FilterSet):
     class Meta:
@@ -805,7 +805,7 @@ class CampRequirementsFilter(django_filters.FilterSet):
         fields = {
             'district' : ['exact'],
             'name' : ['icontains'],
-            'taluk' : ['icontains'],
+            'taluk' : ['exact'],
             'village' : ['icontains']
         }
 
@@ -835,12 +835,12 @@ class ConsentSuccess(TemplateView):
     template_name = "mainapp/volunteer_consent_success.html"
 
 def camp_requirements_list(request):
-    filter = CampRequirementsFilter(request.GET, queryset=RescueCamp.objects.all())
-    camp_data = filter.qs.order_by('name')
+    _filter = CampRequirementsFilter(request.GET, queryset=RescueCamp.objects.all())
+    camp_data = _filter.qs.order_by('name')
     paginator = Paginator(camp_data, 50)
     page = request.GET.get('page')
     data = paginator.get_page(page)
-    return render(request, "mainapp/camp_requirements_list.html", {'filter': filter , 'data' : data})
+    return render(request, "mainapp/camp_requirements_list.html", {'filter': _filter , 'data' : data})
 
 
 class RequestUpdateView(CreateView):
@@ -992,4 +992,3 @@ def announcement_api(request):
     objects = Announcements.objects
     data = list(objects.values())
     return JsonResponse({"announcements" : data})
-    
