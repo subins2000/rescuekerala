@@ -35,6 +35,7 @@ from dateutil import parser
 import calendar
 from mainapp.models import CollectionCenter, Hospital
 from collections import OrderedDict
+import urllib.request, json 
 
 
 
@@ -768,6 +769,7 @@ def announcements(request):
     return render(request, 'announcements.html', {'filter': filter, "data" : link_data,
                                                   'pinned_data': pinned_data, 'hashtags':hashtags})
 
+                                                  
 # Function to filter announcements based on hashtag
 def announcements_filter(request,filter_):
     link_data = Announcements.objects.filter(is_pinned=False,hashtags__icontains=filter_).order_by('-id').all()
@@ -1019,3 +1021,9 @@ def announcement_api(request):
 
 def contribute(request):
     return render(request, 'mainapp/contribute.html')
+
+import requests
+
+def fbannouncements(request):
+    r = requests.get("http://m.afterflood.in")
+    return render(request,"socannouncements.html",{"data" :r.json() })
