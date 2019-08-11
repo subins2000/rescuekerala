@@ -550,6 +550,7 @@ class Announcements(models.Model):
         verbose_name='Priority',
         default='L')
 
+    title = models.TextField(blank=True)
     description = models.TextField(blank=True)
     hashtags = models.TextField(blank=True,default="",help_text="Add hashtags as comma separated values.")
     image = models.ImageField(blank=True, upload_to=upload_to)
