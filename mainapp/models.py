@@ -576,8 +576,8 @@ class DataCollection(models.Model):
     tag = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
-        verbose_name = 'Data: Collection'
-        verbose_name_plural = 'Data: Collections'
+        verbose_name = 'Data Uploads'
+        verbose_name_plural = 'Data Uploads'
 
     def __str__(self):
         return self.document_name
