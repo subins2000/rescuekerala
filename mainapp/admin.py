@@ -255,7 +255,7 @@ class HospitalAdmin(admin.ModelAdmin):
 
 class CollectionCenterAdmin(admin.ModelAdmin):
     list_filter = ('district',)
-       search_fields = ['name']
+    search_fields = ['name']
  
 
 
