@@ -15,6 +15,8 @@
     - [Redis](#redis)
     - [Setting up an S3 Account](#setting-up-an-s3-account)
 - [Getting started](#getting-started)
+    - [Setting up a development environment](#setting-up-a-development-environment)
+    - [Setup using docker-compose](#setup-using-docker-compose)
 - [Creating migration files](#creating-migration-files)
 - [Running tests](#running-tests)
 - [Enable HTTPS connections](#enable-https-connections)
@@ -122,6 +124,19 @@ That's it!
 </details>
 
 <hr>
+
+### Setup using docker-compose
+#### Pre-requisites
+* [Docker](https://docs.docker.com/install/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+Run the scripts in the root directory
+
+* `docker-start.sh` - to start the services. 
+
+* `docker-stop.sh` - to stop the services. 
+
+* `docker-restart.sh` - to rebuild and restart the services. 
 
 ### Creating migration files
 [^top](#table-of-contents)
