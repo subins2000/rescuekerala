@@ -253,7 +253,10 @@ class HospitalAdmin(admin.ModelAdmin):
     list_display = ('district', 'name', 'officer', 'designation','landline','mobile','email')
 
 
-
+class CollectionCenterAdmin(admin.ModelAdmin):
+    list_filter = ('district',)
+    search_fields = ['name']
+ 
 
 
 class CsvBulkUploadAdmin(admin.ModelAdmin):
@@ -272,9 +275,9 @@ admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(Contributor, ContributorAdmin)
 admin.site.register(DistrictNeed)
 admin.site.register(PrivateRescueCamp)
-admin.site.register(DistrictCollection)
+# admin.site.register(DistrictCollection)
 admin.site.register(DistrictManager)
-admin.site.register(CollectionCenter)
+admin.site.register(CollectionCenter,CollectionCenterAdmin)
 admin.site.register(RescueCamp, RescueCampAdmin)
 admin.site.register(NGO, NGOAdmin)
 admin.site.register(Announcements, AnnouncementAdmin)

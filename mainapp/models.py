@@ -309,10 +309,11 @@ class DistrictNeed(models.Model):
     )
     needs = models.TextField(verbose_name="Items required")
     cnandpts = models.TextField(verbose_name="Contacts and collection points") #contacts and collection points
+    inventory = models.TextField()
 
     class Meta:
-        verbose_name = 'District: Need'
-        verbose_name_plural = 'District: Needs'
+        verbose_name = 'District: Need and Collection center'
+        verbose_name_plural = 'District: Needs and Collection centers'
 
     def __str__(self):
         return self.get_district_display()
@@ -635,6 +636,9 @@ class CollectionCenter(models.Model):
     city = models.CharField(null=True, blank=True, max_length=150, verbose_name="City - നഗരം")
     added_at = models.DateTimeField(auto_now_add=True)
     map_link = models.TextField( verbose_name='Map(Cordinate links) link',blank=True,null=True,help_text="Copy and paste the full Google Maps link")
+
+    class Meta:
+        verbose_name = 'Private collection centers'
 
     def __str__(self):
         return self.name

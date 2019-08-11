@@ -18,9 +18,9 @@
       <th>District</th>
       <th>Items required</th>
       <th>Contacts & Collection points</th>
+      <th>Inventory</th>
     </tr>
   {% for item in district_data %}
-    <!-- Ernakulam -->
     <tr valign="top">
       <td><strong>{{item.get_district_display}}</strong></td>
       <td>
@@ -28,6 +28,9 @@
       </td>
       <td>
         {{item.cnandpts|linebreaks}}
+      </td>
+      <td>
+        {{item.inventory|linebreaks}}
       </td>
     </tr>
     {% endfor %}
