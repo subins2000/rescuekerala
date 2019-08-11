@@ -2,8 +2,10 @@
 {% load static %} {% block content %} {% load bootstrap3 %}
 
 {% block pagespecs %}
-    <meta name="Description"> content="Important Announcements regarding Kerala Rescue Operations">
-    <title>Kerala Rescue</title>
+    {% for req in data %}
+        <meta property="og:description" content="{{ req.description }}">
+        <title>{{ req.description | truncatechars:150 }}</title>
+    {% endfor %}
 {% endblock %}
 
 <!--Navigation Breadcrumbs-->
