@@ -18,10 +18,11 @@
             
         {% for req in data %}
             <div class="card priority-high">
-              {% if req.datetime %}
-               <span class="card-title">{% bootstrap_icon "time" %} {{ req.datetime }}
+            <span class="card-title">
+              {% if req.date %}
+               {% bootstrap_icon "time" %} {{ req.date }}
               {% endif %}
-              &nbsp;<b title="Priority" class="card-priority">{{req.page_name}}</b></span><br/><br/>
+              <b title="Priority" class="card-priority">{{req.page_name}}</b></span><br/><br/>
                 <span class="card-text">
                     {{ req.message | safe | urlize }}<br/>
                     {% if req.image %}
