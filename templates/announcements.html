@@ -2,10 +2,15 @@
 {% load static %} {% block content %} {% load bootstrap3 %}
 
 {% block pagespecs %}
-    {% for req in data %}
-        <meta property="og:description" content="{{ req.description }}">
-        <title>{{ req.description | truncatechars:150 }}</title>
-    {% endfor %}
+    {% if id %}
+        {% for req in data %}
+            <meta property="og:description" content="{{ req.description }}">
+            <title>{{ req.description | truncatechars:150 }}</title>
+        {% endfor %}
+    {% else %}
+        <meta property="og:description" content="Help out those affected by the Kerala floods by donating or volunteering">
+        <title>Kerala Rescue</title>
+    {% endif %}
 {% endblock %}
 
 <!--Navigation Breadcrumbs-->
