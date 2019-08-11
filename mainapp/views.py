@@ -211,6 +211,32 @@ class NgoVolunteerView(TemplateView):
     template_name = "ngo_volunteer.html"
 
 
+class MedicalView(TemplateView):
+    template_name = "medical_info.html"
+
+
+class NhmDpmView(TemplateView):
+    template_name = "nhm_dpm.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(NhmDpmView, self).get_context_data(*args, **kwargs)
+        context['data'] = [ ['Thiruvananthapuram', 'Dr Arun PV', '9946105471'],
+                            ['Kollam', 'Dr Harikumar', '9946105474'],
+                            ['Pathanamthitta', 'Dr Abey Sushan', '9946105476'],
+                            ['Alappuzha', 'Dr Radhakrishnan', '9946105478'],
+                            ['Kottayam', 'Dr Vyas Sukumaran', '9946105480'],
+                            ['Idukki', 'Dr Sujith Sukumaran', '9946105482'],
+                            ['Ernakulam', 'Dr Mathews Numpeli', '9946777951'],
+                            ['Thrissur', 'Dr Satheeshan','9946105486'],
+                            ['Palakkad', 'Dr Rachana', '9946105488'],
+                            ['Malappuram', 'Dr Shibulal', '9946105490'],
+                            ['Kozhikode', 'Dr Naveen A' ,'9946105492'],
+                            ['Wayanad', 'Dr Abhilash B', '9946105494'],
+                            ['Kannur', 'Dr Latheesh KV', '9946105496'],
+                            ['Kasargod', 'Dr Raman Swathy', '8943110022'] ]
+        return context
+
+
 class MapView(TemplateView):
     template_name = "mapview.html"
 
