@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
     path('ngo-volunteer/', views.NgoVolunteerView.as_view(), name='ngovolunteerview'),
+    path('medical-info/', views.MedicalView.as_view(), name='medicalview'),
+    path('nhm-dpm/', views.NhmDpmView.as_view(), name='nhmdpm'),
     path('map-view/', views.MapView.as_view(), name='mapview'),
     path('request/', views.CreateRequest.as_view(), name='requestview'),
     path('request_update/', api_views.request_update_list, name='api_request_update'),
@@ -56,8 +58,8 @@ urlpatterns = [
     path('find_people/', views.find_people, name='find_people'),
     path('missing_persons/', views.missing_persons, name='missing_persons'),
     path('announcements/', views.announcements, name="Announcements"),
+    path('announcements/<int:id>', views.announcements_id, name="announcements_id"),
     path('announcements/<str:filter_>', views.announcements_filter, name="announcements_filter"),
-
     path('camp_requirements/', views.camp_requirements_list, name='camp_requirements_list'),
     path('submission_success/', views.SubmissionSuccess.as_view(), name='submission_success'),
     url(r'request_update/(?P<request_id>\d+)/$', views.RequestUpdateView.as_view(), name='requestupdateview'),
@@ -67,5 +69,5 @@ urlpatterns = [
     url('missing_and_finding_persons/', views.ReportFindPerson.as_view(), name='report_find_person'),
     url('hospitals/', views.HospitalView.as_view(), name='hospitals'),
     url('announcements/api', views.announcement_api, name='announcements_api'),
-
+    url('PIF/' , views.fbannouncements , name="social_media_announcements" )
 ]

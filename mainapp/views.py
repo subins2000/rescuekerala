@@ -35,6 +35,7 @@ from dateutil import parser
 import calendar
 from mainapp.models import CollectionCenter, Hospital
 from collections import OrderedDict
+import urllib.request, json 
 
 
 
@@ -208,6 +209,32 @@ class HomePageView(TemplateView):
 
 class NgoVolunteerView(TemplateView):
     template_name = "ngo_volunteer.html"
+
+
+class MedicalView(TemplateView):
+    template_name = "medical_info.html"
+
+
+class NhmDpmView(TemplateView):
+    template_name = "nhm_dpm.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(NhmDpmView, self).get_context_data(*args, **kwargs)
+        context['data'] = [ ['Thiruvananthapuram', 'Dr Arun PV', '9946105471'],
+                            ['Kollam', 'Dr Harikumar', '9946105474'],
+                            ['Pathanamthitta', 'Dr Abey Sushan', '9946105476'],
+                            ['Alappuzha', 'Dr Radhakrishnan', '9946105478'],
+                            ['Kottayam', 'Dr Vyas Sukumaran', '9946105480'],
+                            ['Idukki', 'Dr Sujith Sukumaran', '9946105482'],
+                            ['Ernakulam', 'Dr Mathews Numpeli', '9946777951'],
+                            ['Thrissur', 'Dr Satheeshan','9946105486'],
+                            ['Palakkad', 'Dr Rachana', '9946105488'],
+                            ['Malappuram', 'Dr Shibulal', '9946105490'],
+                            ['Kozhikode', 'Dr Naveen A' ,'9946105492'],
+                            ['Wayanad', 'Dr Abhilash B', '9946105494'],
+                            ['Kannur', 'Dr Latheesh KV', '9946105496'],
+                            ['Kasargod', 'Dr Raman Swathy', '8943110022'] ]
+        return context
 
 
 class MapView(TemplateView):
@@ -768,9 +795,20 @@ def announcements(request):
     return render(request, 'announcements.html', {'filter': filter, "data" : link_data,
                                                   'pinned_data': pinned_data, 'hashtags':hashtags})
 
+
+def announcements_id(request,id):
+    link_data = Announcements.objects.filter(id=id).all()
+
+    hashtags = get_hashtags(Announcements)
+    paginator = Paginator(link_data, 10)
+    page = request.GET.get('page')
+    link_data = paginator.get_page(page)
+    return render(request, 'announcements.html', {"data" : link_data, 'hashtags':hashtags, 'id': id})
+
+
 # Function to filter announcements based on hashtag
 def announcements_filter(request,filter_):
-    link_data = Announcements.objects.filter(is_pinned=False,hashtags__icontains=filter_).order_by('-id').all()
+    link_data = Announcements.objects.filter(hashtags__icontains=filter_).order_by('-id').all()
     # Uncomment next line if you want to show pinned data in filtered view and add pinned data in render JSON
     # pinned_data = Announcements.objects.filter(is_pinned=True).order_by('-id').all()[:5]
 
@@ -1019,3 +1057,9 @@ def announcement_api(request):
 
 def contribute(request):
     return render(request, 'mainapp/contribute.html')
+
+import requests
+
+def fbannouncements(request):
+    r = requests.get("http://m.afterflood.in")
+    return render(request,"socannouncements.html",{"data" :r.json() })

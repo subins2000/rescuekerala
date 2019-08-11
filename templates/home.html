@@ -63,6 +63,13 @@
                 <span class="ml small notranslate">അറിയിപ്പുകൾ</span>
             </span>
         </a>
+    <a href="{%url 'social_media_announcements' %}" class="home-button card" role="button">
+            {% bootstrap_icon "bullhorn" %}
+            <span class="text">
+            Public information Feed<br/>
+                <span class="ml small notranslate">പൊതു വിവര ഫീഡ്</span>
+            </span>
+        </a>
     <a href="{%url 'distneedsview' %}" class="home-button card" role="button">
         {% bootstrap_icon "map-marker" %}
         <span class="text">
@@ -98,11 +105,11 @@
         <span class="ml small notranslate">ഇതു വരെ ആവശ്യപ്പെട്ടവ</span>
       </span>
     </a>
-    <a href="{%url 'hospitals' %}" class="home-button card" role="button">
+    <a href="{%url 'medicalview' %}" class="home-button card" role="button">
         {% bootstrap_icon "plus" %}
         <span class="text">
-        Hospitals<br/>
-            <span class="ml small notranslate">ആശുപത്രികൾ</span>
+        Medical Information<br/>
+            <span class="ml small notranslate">ചികിത്സാ സംബന്ധമായ വിവരങ്ങൾ</span>
         </span>
     </a>
     <a href="{%url 'privatedetails' %}" class="home-button card" role="button">
