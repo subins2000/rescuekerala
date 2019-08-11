@@ -5,12 +5,12 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Social Announcements</li>
+    <li class="breadcrumb-item active" aria-current="page">Public information Feed</li>
   </ol>
 </nav>
 
 <div class="container text-center">
-  <h2 class="main-logo">Other Important Announcements</h2>
+  <h2 class="main-logo">Public information Feed</h2>
     <div class="announcement-cards">
 
         
@@ -18,12 +18,15 @@
             
         {% for req in data %}
             <div class="card priority-high">
-              <!--  <span class="card-title">{% bootstrap_icon "time" %} {{ req.dateadded }} -->&nbsp;<b title="Priority" class="card-priority">{{req.page_name}}</b></span><br/><br/>
+              {% if req.datetime %}
+               <span class="card-title">{% bootstrap_icon "time" %} {{ req.datetime }}
+              {% endif %}
+              &nbsp;<b title="Priority" class="card-priority">{{req.page_name}}</b></span><br/><br/>
                 <span class="card-text">
                     {{ req.message | safe | urlize }}<br/>
                     {% if req.image %}
                         <a href="{{req.image.url}}"
-                            class="btn btn-default card-link">{% bootstrap_icon "eye-open" %} View Image</a>
+                            class="btn btn-default card-link">{% bootstrap_icon "eye-open" %} View Post</a>
                     {% endif %}
                     {% if req.upload %}
                         <a href="{{req.upload.url}}"

@@ -68,5 +68,5 @@ urlpatterns = [
     url('missing_and_finding_persons/', views.ReportFindPerson.as_view(), name='report_find_person'),
     url('hospitals/', views.HospitalView.as_view(), name='hospitals'),
     url('announcements/api', views.announcement_api, name='announcements_api'),
-    url('socialmediaupdates/' , views.fbannouncements , name="social_media_announcements" )
+    url('PIF/' , views.fbannouncements , name="social_media_announcements" )
 ]
