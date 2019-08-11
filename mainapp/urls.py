@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
     path('ngo-volunteer/', views.NgoVolunteerView.as_view(), name='ngovolunteerview'),
+    path('medical-info/', views.MedicalView.as_view(), name='medicalview'),
+    path('nhm-dpm/', views.NhmDpmView.as_view(), name='nhmdpm'),
     path('map-view/', views.MapView.as_view(), name='mapview'),
     path('request/', views.CreateRequest.as_view(), name='requestview'),
     path('request_update/', api_views.request_update_list, name='api_request_update'),
