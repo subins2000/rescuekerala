@@ -514,23 +514,28 @@ def dmotal(request):
     if dist == -1:
         return render(request, "dmotal.html")
     camp_qs = RescueCamp.objects.filter(status='active')
-    if dist != "all":
-        data = camp_qs.filter(district=dist)
     distmapper = dict(districts)
-    camps_by_taluk = camp_qs.values('taluk').annotate(
-        total_people=Sum('total_people'), total_male=Sum('total_males'),
-        total_female=Sum('total_females'), total_infant=Sum('total_infants'),
-        total_medical=Count(Case(
-            # Empty strings with or w/o spaces.
-            When(medical_req__regex=r'^[ ]*$', then=1),
-            # Null strings.
-            When(medical_req__isnull=True, then=1))),
-        total_camp=Count('id'), district=Value(distmapper[dist], CharField())
-    ).annotate(
-        # We wanted non-empty, non-null strings but counted the opposite. Reverse now.
-        total_medical=F('total_camp')-F('total_medical')
-    )
-    return render(request, "dmotal.html", {"camps": list(camps_by_taluk)})
+    if dist != "all":
+        queryset = [dist]
+    else:
+        queryset = list(distmapper.keys())
+    camps_by_taluk = []
+    for query in queryset:
+        camps = camp_qs.filter(district=query)
+        camps_by_taluk += list(camps.values('taluk').annotate(
+            total_people=Sum('total_people'), total_male=Sum('total_males'),
+            total_female=Sum('total_females'), total_infant=Sum('total_infants'),
+            total_medical=Count(Case(
+                # Empty strings with or w/o spaces.
+                When(medical_req__regex=r'^[ ]*$', then=1),
+                # Null strings.
+                When(medical_req__isnull=True, then=1))),
+            total_camp=Count('id'), district=Value(distmapper[query], CharField())
+        ).annotate(
+            # We wanted non-empty, non-null strings but counted the opposite. Reverse now.
+            total_medical=F('total_camp')-F('total_medical')
+        ))
+    return render(request, "dmotal.html", {"camps": camps_by_taluk})
 
 def dmocsv(request):
     if("district" not in request.GET.keys()):return HttpResponseRedirect("/")
