@@ -18,10 +18,9 @@ def parsedate(str):
                     return datetime.datetime.strptime(str, "%d/%m/%Y" )
         return None
     except :
-        print(str)
         return None
 
-def import_inmate_file(csvid):
+def import_inmate_file(csvid, is_recovery=False):
 
     import django
     django.setup()
@@ -51,6 +50,7 @@ def import_inmate_file(csvid):
             empty = 0
             header = ["name" , "phone" , "address" , "notes" , "district" , "checkin_date" , "checkout_date" , "gender" , "age" ]
             for i in header:
+                if(datum.get(i, "") == None):empty+=1;continue
                 if(datum.get(i, "").strip() == ""):empty+=1
             if(empty == len(header)):
                 continue
@@ -62,12 +62,15 @@ def import_inmate_file(csvid):
                 elif(datum.get("gender", "")[0] == "f" or datum.get("gender", "")[0] == "F"):
                     gender = 1
             age = '-1'
-            if(datum.get("age", "").strip() != ""):
-               age = datum.get("age", "").strip()
-
+            if(datum.get("age", "") != None):
+                if(datum.get("age", "").strip() != ""):
+                    age = datum.get("age", "").strip()
+            district = ""
+            if(datum.get("district", "") != None):
+                district = district.lower()
 
             Person(
-                name = datum.get("name", ""),
+                name = datum.get("name", "")[:50],
                 phone = datum.get("phone", ""),
                 age = int(float(age)),
                 gender = gender,
@@ -79,8 +82,12 @@ def import_inmate_file(csvid):
                 checkin_date = parsedate(datum.get("checkin_date", None)),
                 checkout_date = parsedate(datum.get("checkout_date", None))
             ).save()
-        CsvBulkUpload.objects.filter(id = csvid).update(is_completed = True)
-        CsvBulkUpload.objects.filter(id = csvid).update(failure_reason = '')
+
+        if is_recovery:
+            csv_name = CsvBulkUpload.objects.get(id=csvid).name
+            CsvBulkUpload.objects.filter(id = csvid).update(is_completed = True, failure_reason = '', name="rec-"+csv_name[:15])
+        else:
+            CsvBulkUpload.objects.filter(id = csvid).update(is_completed = True, failure_reason = '')
     except Exception as e:
         CsvBulkUpload.objects.filter(id = csvid).update(failure_reason=(getattr(e, 'message', repr(e))))
 

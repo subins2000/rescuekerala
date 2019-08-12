@@ -53,26 +53,26 @@ a.home-button:hover{
     background: #333333;
     color:#FFFFFF;
 }
-    a.home-button .glyphicon{
-        font-size: 5rem;
-        display: block;
-        margin-bottom: 10px;
-    }
-    a.home-button .text{
-        font-size: 2rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        display:inline-block;
-    }
-    a.home-button .ml{
-        margin-top:7px;
-        padding-top:7px;
-        border-top: 1px dotted #555555;
-        font-size: 1.4rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        display:inline-block;
-    }
+a.home-button .glyphicon{
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+a.home-button .text{
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    display:inline-block;
+}
+a.home-button .ml{
+    margin-top:7px;
+    padding-top:7px;
+    border-top: 1px dotted #555555;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    display:inline-block;
+}
 p.home-info{
     font-size: 1.6rem;
     font-weight: 500;
@@ -286,8 +286,8 @@ table thead tr th {
 .card.priority-high{border-color:#ef7831;}
     .card.priority-high .card-priority{background-color:#ef7831;}
 
-.card.priority-medium{border-color:#7ab754;}
-    .card.priority-medium .card-priority{background-color:#7ab754;}
+.card.priority-medium{border-color:#ffc107;}
+    .card.priority-medium .card-priority{background-color:#ffc107;}
 
 .card.priority-low{border-color:#286090;}
     .card.priority-low .card-priority{background-color:#286090;}

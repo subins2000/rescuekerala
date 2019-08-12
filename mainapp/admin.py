@@ -1,14 +1,40 @@
 import csv
 import codecs
+
 from django.contrib import admin
 from django.core.validators import EMPTY_VALUES
 from django.http import HttpResponse
+from django.http import StreamingHttpResponse
+
 from mainapp.redis_queue import bulk_csv_upload_queue
 from mainapp.csvimporter import import_inmate_file
-
-
 from .models import Request, Volunteer, Contributor, DistrictNeed, DistrictCollection, DistrictManager, vol_categories, \
-    RescueCamp, Person, NGO, Announcements, DataCollection , PrivateRescueCamp , CollectionCenter, CsvBulkUpload
+    RescueCamp, Person, NGO, Announcements, DataCollection , PrivateRescueCamp , CollectionCenter, CsvBulkUpload, RequestUpdate, \
+    Hospital
+
+"""
+Helper function for streaming csv downloads
+An object that implements just the write method of the file-like
+interface.
+"""
+class Echo:
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
+"""A view that streams a large CSV file."""
+def create_streaming_csv_response(header_row, queryset, filename):
+    # header_row = ('name', 'phone', 'age', 'sex', 'district_name', 'camped_at', 'status')
+    objects = queryset.all()
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+
+    response = StreamingHttpResponse((writer.writerow([getattr(object, field) for field in header_row]) for object in objects.iterator()),
+                                     content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(filename)
+    # response.write(codecs.BOM_UTF8)
+    return response
 
 
 def create_csv_response(csv_name, header_row, body_rows):
@@ -40,14 +66,17 @@ class RequestAdmin(admin.ModelAdmin):
     list_filter = ('district', 'status','dateadded')
 
     def mark_as_completed(self, request, queryset):
+        self.message_user(request, "Marked selected requests as completed.")
         queryset.update(status='sup')
         return
 
     def mark_as_new(self, request, queryset):
+        self.message_user(request, "Marked selected requests as new.")
         queryset.update(status='new')
         return
 
     def mark_as_ongoing(self, request, queryset):
+        self.message_user(request, "Marked selected requests as ongoing.")
         queryset.update(status='pro')
         return
 
@@ -130,7 +159,7 @@ class RescueCampAdmin(admin.ModelAdmin):
     list_display = ('district', 'name', 'location', 'status', 'contacts', 'facilities_available', 'total_people',
                     'total_males', 'total_females', 'total_infants', 'food_req',
                     'clothing_req', 'sanitary_req', 'medical_req', 'other_req')
-    list_filter = ('district','status')
+    list_filter = ('district','status', 'taluk')
     search_fields = ['name']
 
     def download_inmates(self, request, queryset):
@@ -181,14 +210,15 @@ class RescueCampAdmin(admin.ModelAdmin):
 
 
 class AnnouncementAdmin(admin.ModelAdmin):
-    fields = ['is_pinned', 'priority', 'description', 'image', 'upload']
+    fields = ['is_pinned', 'priority', 'hashtags', 'description', 'image', 'upload']
 
 
 class PersonAdmin(admin.ModelAdmin):
-    actions = ['download_csv']
+    actions = ['download_csv', 'stream_csv']
     list_display = ('name', 'camped_at', 'added_at', 'phone', 'age', 'gender', 'camped_at_district', 'camped_at_taluk')
     ordering = ('-added_at',)
     list_filter = ('camped_at__district', 'camped_at__taluk')
+    search_fields = ['camped_at__district', 'camped_at__name', 'name']
 
     def camped_at_taluk(self, instance):
         return instance.camped_at.taluk
@@ -206,9 +236,27 @@ class PersonAdmin(admin.ModelAdmin):
         response = create_csv_response('People in relief camps', header_row, body_rows)
         return response
 
+    def stream_csv(self, request, queryset):
+        header_row = ('name', 'phone', 'age', 'sex', 'district_name', 'camped_at', 'status')
+        return create_streaming_csv_response(header_row, queryset, filename='inmates')
+
 
 class DataCollectionAdmin(admin.ModelAdmin):
     list_display = ['document_name', 'document', 'tag']
+
+
+class RequestUpdateAdmin(admin.ModelAdmin):
+    readonly_fields = ['request']
+
+class HospitalAdmin(admin.ModelAdmin):
+    list_filter = ('district',)
+    list_display = ('district', 'name', 'officer', 'designation','landline','mobile','email')
+
+
+class CollectionCenterAdmin(admin.ModelAdmin):
+    list_filter = ('district',)
+    search_fields = ['name']
+ 
 
 
 class CsvBulkUploadAdmin(admin.ModelAdmin):
@@ -219,19 +267,20 @@ class CsvBulkUploadAdmin(admin.ModelAdmin):
         )
     autocomplete_fields = ['camp']
     readonly_fields = ['is_completed', 'failure_reason']
-    list_display = ['name','camp','is_completed']
+    list_display = ['name', 'camp', 'is_completed']
+    search_fields = ['camp__name']
 
 admin.site.register(Request, RequestAdmin)
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(Contributor, ContributorAdmin)
 admin.site.register(DistrictNeed)
 admin.site.register(PrivateRescueCamp)
-admin.site.register(DistrictCollection)
+# admin.site.register(DistrictCollection)
 admin.site.register(DistrictManager)
-admin.site.register(CollectionCenter)
+admin.site.register(CollectionCenter,CollectionCenterAdmin)
 admin.site.register(RescueCamp, RescueCampAdmin)
 admin.site.register(NGO, NGOAdmin)
 admin.site.register(Announcements, AnnouncementAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(DataCollection, DataCollectionAdmin)
-admin.site.register(CsvBulkUpload, CsvBulkUploadAdmin)
+admin.site.register(Hospital,HospitalAdmin)
