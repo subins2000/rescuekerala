@@ -1,6 +1,18 @@
 {% extends 'base.html' %} {% load tag_lib %}
 {% load static %} {% block content %} {% load bootstrap3 %}
 
+{% block pagespecs %}
+    {% if id %}
+        {% for req in data %}
+            <meta property="og:description" content="{{ req.description }}">
+            <title>{{ req.description | truncatechars:150 }}</title>
+        {% endfor %}
+    {% else %}
+        <meta property="og:description" content="Important Announcements regarding Kerala Rescue Operations">
+        <title>Kerala Rescue</title>
+    {% endif %}
+{% endblock %}
+
 <!--Navigation Breadcrumbs-->
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
