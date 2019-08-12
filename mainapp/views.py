@@ -1064,5 +1064,5 @@ def contribute(request):
 import requests
 
 def fbannouncements(request):
-    r = requests.get("http://m.afterflood.in")
+    r = requests.get("http://m.afterflood.in/api")
     return render(request,"socannouncements.html",{"data" :r.json() })

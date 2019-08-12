@@ -14,51 +14,24 @@
     <div class="announcement-cards">
 
         
-        
-            
-        {% for req in data %}
-            <div class="card priority-high">
-            <span class="card-title">
-              {% if req.date %}
-               {% bootstrap_icon "time" %} {{ req.date }}
-              {% endif %}
-              <b title="Priority" class="card-priority">{{req.page_name}}</b></span><br/><br/>
-                <span class="card-text">
-                    {{ req.message | safe | urlize }}<br/>
-                    {% if req.image %}
-                        <a href="{{req.image.url}}"
-                            class="btn btn-default card-link">{% bootstrap_icon "eye-open" %} View Post</a>
-                    {% endif %}
-                    {% if req.upload %}
-                        <a href="{{req.upload.url}}"
-                            class="btn btn-default card-link">{% bootstrap_icon "download" %} Download</a>
-                    {% endif %}
-                </span>
-               <!-- <span class="card-time">{% bootstrap_icon "time" %} {{ req.dateadded }}</span>-->
+        {% for i in data %}
+                        <div class="card priority-low">
 
-
-
+    <div class="fb-post" data-href="https://www.facebook.com/{{i.page_id}}/posts/{{i.post_id}}/"></div>
 
             </div>
-        {% endfor %}
+
+{% endfor %}
     </div>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if data.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ data.previous_page_number }}">previous</a>
-            {% endif %} {% for i in data.paginator.page_range %} {% if data.number == i %}
-            <a class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></a>
-            {% else %}
-            <a href="?page={{ i }}">{{ i }}</a>
-            {% endif %} {% endfor %} {% if data.has_next %}
-            <a href="?page={{ data.next_page_number }}">next</a>
-            <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
 </div>
 
 
 {% endblock %}
+
+{% block javascript %}
+
+<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+
+{% endblock %}
+
