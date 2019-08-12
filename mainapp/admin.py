@@ -23,7 +23,7 @@ class Echo:
         return value
 
 
-"""A view that streams a large CSV file."""
+"""A Function that streams a large CSV file."""
 def create_streaming_csv_response(header_row, queryset, filename):
     # header_row = ('name', 'phone', 'age', 'sex', 'district_name', 'camped_at', 'status')
     objects = queryset.all()
@@ -256,7 +256,18 @@ class HospitalAdmin(admin.ModelAdmin):
 class CollectionCenterAdmin(admin.ModelAdmin):
     list_filter = ('district',)
     search_fields = ['name']
- 
+    actions = ['download_csv']
+
+    def download_csv(self, request, queryset):
+        header_row = ('name' , 'address' , 'contacts', 'type_of_materials_collecting' , 'district' , 'lsg_type','lsg_name','ward_name','is_inside_kerala' , 'city','added_at','map_link')
+        body_rows = []
+        collection_centers = queryset.all()
+        for cc in collection_centers:
+            row = [getattr(cc, field) for field in header_row]
+            body_rows.append(row)
+
+        response = create_csv_response('Collection_Centers', header_row, body_rows)
+        return response
 
 
 class CsvBulkUploadAdmin(admin.ModelAdmin):
