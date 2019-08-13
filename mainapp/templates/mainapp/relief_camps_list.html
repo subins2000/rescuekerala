@@ -35,6 +35,9 @@
       <th>Map</th>
       <th>Address</th>
       <th>Contact Numbers</th>
+      <th>Males</th>
+      <th>Females</th>
+      <th>Infants</th>
       <th>Total People</th>
     </tr>
     {% for item in data %}
@@ -54,7 +57,20 @@
         {{ item.contacts | linebreaks }}
       </td>
       <td>
-        {{ item.total_people }}
+        {{ item.total_males }}
+      </td>
+      <td>
+        {{ item.total_females }}
+      </td>
+      <td>
+        {{ item.total_infants }}
+      </td>
+      <td>
+        {% if item.total_males and item.total_females %}
+          {{ item.total_males|add:item.total_females|add:item.total_infants }}
+        {% else %}
+          {{ item.total_people }}
+        {% endif %}
       </td>
     </tr>
     {% endfor %}
